@@ -13,6 +13,7 @@ const postRoute = require("./routes/posts");
 const commentRoute = require("./routes/comments");
 const { fileURLToPath } = require("url");
 const uploadRouter = require("./routes/uploadRoutes");
+const fileUpload = require('express-fileupload');
 
 //database
 const connectDB = async () => {
@@ -31,14 +32,15 @@ const connectDB = async () => {
 dotenv.config();
 app.use(morgan("tiny"));
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(cors({ origin: "http://127.0.0.1:5173", credentials: true }));
 app.use("/publicfiles/uploads", express.static(__dirname + "./publicfiles/uploads"));
+app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }))
 
 const api = process.env.API_URL;
 
 app.get(`/`, (req, res) => {
-  res.send(`${api}`);
+  res.send(`THE BLOG`);
 });
 app.use(`${api}/upload`, uploadRouter);
 app.use(`${api}/auth`, authRoute);

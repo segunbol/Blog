@@ -6,22 +6,42 @@ import { Store } from "../context/UserContext";
 import { URL } from "../url";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [file, setFile] = useState(null);
+  const [ postImg, setPostImg] = useState(null)
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [cat, setCat] = useState("");
   const [cats, setCats] = useState([]);
-
   const navigate = useNavigate();
 
   const deleteCategory = (i) => {
     let updatedCats = [...cats];
     updatedCats.splice(i);
     setCats(updatedCats);
+  };
+
+  const handleProductImageUpload = (e) => {
+    const file = e.target.files[0];
+    console.log(file)
+    TransformFileData(file);
+  };
+
+  const TransformFileData = (file) => {
+    const reader = new FileReader();
+    console.log(file)
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setPostImg(reader.result);
+      };
+    } else {
+      setPostImg("");
+    }
   };
 
   const addCategory = () => {
@@ -39,27 +59,12 @@ const CreatePost = () => {
       username: userInfo.username,
       userId: userInfo._id,
       categories: cats,
+      photo: postImg
       // token : userInfo.token
     };
-
-    if (file) {
-      console.log(file)
-      const data = new FormData();
-      const filename = Date.now() + file.name;
-      data.append("img", filename);
-      data.append("file", file);
-      post.photo = filename;
-      console.log(data)
-      //img upload
-      try {
-        const imgUpload=await axios.post(URL+"/api/v1/upload",data)
-        console.log(imgUpload.data)
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    
     //post upload
-    console.log(post)
+    console.log(postImg)
     try {
       const res = await axios.post(URL + "/api/v1/posts/create", post, {
         withCredentials: true,
@@ -79,6 +84,15 @@ const CreatePost = () => {
       <Navbar />
       <div className="px-6 md:px-[200px] mt-8">
         <h1 className="font-bold md:text-2xl text-xl ">Create a post</h1>
+        <ImagePreview>
+        {postImg ? (
+          <>
+            <img src={postImg} alt="error!" />
+          </>
+        ) : (
+          <p>Product image upload preview will appear here!</p>
+        )}
+      </ImagePreview>
         <form className="w-full flex flex-col space-y-4 md:space-y-8 mt-4">
           <input
             onChange={(e) => setTitle(e.target.value)}
@@ -87,7 +101,9 @@ const CreatePost = () => {
             className="px-4 py-2 outline-none"
           />
           <input
-            onChange={(e) => setFile(e.target.files[0])}
+            id="imgUpload"
+            accept="image/*"
+            onChange={handleProductImageUpload}
             type="file"
             className="px-4"
           />
@@ -146,4 +162,22 @@ const CreatePost = () => {
   );
 };
 
+
+const ImagePreview = styled.div`
+  margin: 2rem 0 2rem 2rem;
+  padding: 2rem;
+  border: 2px solid rgb(183, 183, 183);
+  max-width: 300px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  color: rgb(78, 78, 78);
+  border-radius: 5px;
+
+  img {
+    max-width: 100%;
+  }
+`;
 export default CreatePost;

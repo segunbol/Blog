@@ -22,7 +22,10 @@ const MyBlogs = () => {
   const fetchPosts=async()=>{
     setLoader(true)
     try{
-      const res=await axios.get(URL+"/api/v1/posts/user/"+userInfo._id)
+      const res=await axios.get(URL+"/api/v1/posts/user/"+userInfo._id,  {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+        withCredentials: true,
+      })
       // console.log(res.data)
       setPosts(res.data)
       if(res.data.length===0){
@@ -48,7 +51,7 @@ const MyBlogs = () => {
   return (
     <div>
         <Navbar/>
-        <div className="px-8 md:px-[200px] min-h-[80vh]">
+        <div className="px-8 md:px-[200px] min-h-[80vh] bg-gray-800">
         {loader?<div className="h-[40vh] flex justify-center items-center"><Loader/></div>:!noResults?
         posts.map((post)=>(
           <>

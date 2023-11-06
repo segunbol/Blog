@@ -1,28 +1,33 @@
 /* eslint-disable react/prop-types */
-import {IF} from '../url'
 
 
 const HomePosts = ({post}) => {
+
+  const getText = (html) =>{
+    const doc = new DOMParser().parseFromString(html, "text/html")
+    return doc.body.textContent
+  }
+
   return (
-    <div className="w-full flex mt-8 space-x-4">
+    <div className="w-full flex space-x-4 py-8 border-t-2 border-gray-700">
     {/* left */}
     <div className="w-[35%] h-[200px] flex justify-center items-center">
     {/* {console.log(post.photo)} */}
-    <img src={post.photo} alt={post.photo} className="h-full w-full object-cover"/>
+    <img src={post.photo} alt={post.photo} className="h-full rounded m-8 w-54 object-cover"/>
     </div>
     {/* right */}
     <div className="flex flex-col w-[65%]">
-      <h1 className="text-xl font-bold md:mb-2 mb-1 md:text-2xl">
-      {post.title}
+      <h1 className="text-xl text-gray-300 font-bold md:mb-2 mb-1 md:text-2xl">
+      {post.title.slice(0,50)}...
       </h1>
-      <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between md:mb-4">
+      <div className="flex mb-2 text-sm font-semibold text-orange-600 items-center justify-between md:mb-4">
        <p>@{post.username}</p>
-       <div className="flex space-x-2 text-sm">
+       <div className="flex space-x-2 text-sm italic font-bold">
        <p>{new Date(post.updatedAt).toString().slice(0,15)}</p>
        <p>{new Date(post.updatedAt).toString().slice(16,24)}</p>
        </div>
       </div>
-      <p className="text-sm md:text-lg">{post.desc.slice(0,200)+" ...Read more"}</p>
+      <p className="text-sm text-gray-100 md:text-lg">{getText(post.desc.slice(0,200)+" ...Read More")}</p>
     </div>
 
     </div>

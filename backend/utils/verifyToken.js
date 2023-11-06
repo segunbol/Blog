@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
   const authorization = req.headers.authorization;
-  console.log(authorization)
   const token = authorization.slice(7, authorization.length); // Bearer XXXXXX
   if (!token) {
     console.log("You are not authenticated!");

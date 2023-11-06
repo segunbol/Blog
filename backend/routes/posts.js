@@ -6,6 +6,7 @@ const Post=require('../models/Post')
 const Comment=require('../models/Comment')
 const verifyToken = require('../utils/verifyToken')
 const cloudinary = require("../utils/cloudinary");
+const sharp = require('sharp');
 
 //CREATE
 // router.post("/create",verifyToken,async (req,res)=>{
@@ -25,7 +26,7 @@ const cloudinary = require("../utils/cloudinary");
 // })
 
 router.post("/create", verifyToken, async (req, res) => {
-    const { username, title, desc, categories, userId, photo } = req.body;
+    const { username, title, desc, categories, userId, photo, userImg } = req.body;
     console.log("e dey her")
     try {
       if (photo) {
@@ -36,6 +37,7 @@ router.post("/create", verifyToken, async (req, res) => {
             username,
             categories,
             userId,
+            userImg,
             desc,
             title,
             photo: uploadedResponse.url,
@@ -117,6 +119,7 @@ router.get("/",async (req,res)=>{
         res.status(200).json(posts)
     }
     catch(err){
+        console.log(err)
         res.status(500).json(err)
     }
 })

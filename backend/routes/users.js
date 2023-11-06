@@ -5,20 +5,34 @@ const bcrypt=require('bcrypt')
 const Post=require('../models/Post')
 const Comment=require('../models/Comment')
 const verifyToken = require('../utils/verifyToken')
+const cloudinary = require("../utils/cloudinary");
 
 
 //UPDATE
 router.put("/:id",verifyToken,async (req,res)=>{
+    let {username, email, password, userImg} = req.body
     try{
-        if(req.body.password){
+        if(password){
             const salt=await bcrypt.genSalt(10)
-            req.body.password=await bcrypt.hashSync(req.body.password,salt)
+            password=await bcrypt.hashSync(req.body.password,salt)
         }
-        const updatedUser=await User.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
-        res.status(200).json(updatedUser)
-
-    }
+        const newpas = password
+        if(userImg){
+            const uploadedResponse = await cloudinary.uploader.upload(userImg);
+            
+        if (uploadedResponse) {
+          const user = {
+            username,
+            email,
+            newpas,
+            userImg: uploadedResponse.url,
+          };
+          const updatedUser=await User.findByIdAndUpdate(req.params.id,{$set: user},{new:true})
+          res.status(200).json(updatedUser)
+        } 
+    }}
     catch(err){
+        console.log(err)
         res.status(500).json(err)
     }
 })

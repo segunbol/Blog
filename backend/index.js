@@ -40,7 +40,7 @@ app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }))
 const api = process.env.API_URL;
 
 app.get(`/`, (req, res) => {
-  res.send(`THE BLOG`);
+  res.send(`SHOBLOYOKE THE BLOG`);
 });
 app.use(`${api}/upload`, uploadRouter);
 app.use(`${api}/auth`, authRoute);

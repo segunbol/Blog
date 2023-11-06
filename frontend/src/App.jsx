@@ -8,6 +8,7 @@ import EditPost from "./pages/EditPost";
 import Profile from "./pages/Profile";
 import { StoreProvider } from "./context/UserContext";
 import MyBlogs from "./pages/MyBlogs";
+import "./style.scss"
 
 const App = () => {
   return (

@@ -9,7 +9,7 @@ const HomePosts = ({post}) => {
   }
 
   return (
-    <div className="w-full flex space-x-4 py-8 border-t-2 border-gray-700">
+    <div className="w-full xl:flex lg:flex md:flex sm:block xs:flex xs:px-2 space-x-4 py-8 border-t-2 border-gray-700 ">
     {/* left */}
     <div className="w-[35%] h-[200px] flex justify-center items-center">
     {/* {console.log(post.photo)} */}

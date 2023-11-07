@@ -39,11 +39,11 @@ const Home = () => {
   useEffect(() => {
     fetchPosts();
   }, [search]);
-
+  
   return (
     <>
       <Navbar />
-      <div className="px-8 md:px-[200px] min-h-[80vh] bg-gray-800 mt-12">
+      <div className="lg:px-32 md:px-[50px] min-h-[80vh] bg-gray-800 mt-12" key={Math.random()}>
         {loader ? (
           <div className="h-[40vh] flex justify-center items-center">
             <Loader />

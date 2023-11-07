@@ -6,7 +6,7 @@ const Post=require('../models/Post')
 const Comment=require('../models/Comment')
 const verifyToken = require('../utils/verifyToken')
 const cloudinary = require("../utils/cloudinary");
-const sharp = require('sharp');
+// const sharp = require('sharp');
 
 //CREATE
 // router.post("/create",verifyToken,async (req,res)=>{

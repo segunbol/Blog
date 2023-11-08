@@ -5,6 +5,7 @@ import axios from "axios";
 import { URL } from "../url";
 // import { UserContext } from "../context/UserContext";
 import { Store } from "../context/UserContext";
+import Navbar from "../components/Navbar";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   
   const handleLogin = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     try {
       const data = await axios.post(
         URL + "/api/v1/auth/login",
@@ -42,33 +43,28 @@ const Login = () => {
   return (
     <>
       <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
-        <h1 className="text-lg md:text-xl font-extrabold">
-          <Link to="/">Shoboloyoke</Link>
-        </h1>
-        <h3>
-          <Link to="/register">Register</Link>
-        </h3>
+        <Navbar />
       </div>
-      <div className="w-full flex justify-center items-center h-[80vh] ">
+      <div className="w-full flex justify-center items-center h-[80vh]  bg-gradient-to-r from-slate-900 via-purple-700 to-slate-800">
         <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
           <h1 className="text-xl font-bold text-left">
             Log in to your account
           </h1>
           <input
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-black outline-0"
+            className="w-full px-4 py-2 border-2 border-gray-900 outline-0"
             type="text"
             placeholder="Enter your email"
           />
           <input
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-black outline-0"
+            className="w-full px-4 py-2 border-2 border-gray-900 outline-0"
             type="password"
             placeholder="Enter your password"
           />
           <button
             onClick={handleLogin}
-            className="w-full px-4 py-4 text-lg font-bold text-white bg-black rounded-lg hover:bg-gray-500 hover:text-black "
+            className="w-full px-4 py-4 text-lg font-bold text-white bg-gray-900 rounded-lg hover:bg-gray-500 hover:text-gray-900 "
           >
             Log in
           </button>
@@ -77,7 +73,7 @@ const Login = () => {
           )}
           <div className="flex justify-center items-center space-x-3">
             <p>New here?</p>
-            <p className="text-gray-500 hover:text-black">
+            <p className="text-gray-500 hover:text-gray-900">
               <Link to="/register">Register</Link>
             </p>
           </div>

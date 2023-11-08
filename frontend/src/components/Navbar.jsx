@@ -1,45 +1,51 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { FaBars } from "react-icons/fa";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Menu from "./Menu";
 import { Store } from "../context/UserContext";
+import axios from "axios";
+import { URL } from "../url";
 
 const Navbar = () => {
   const [prompt, setPrompt] = useState("");
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
   const path = useLocation().pathname;
   const [showSearchInput, setShowSearchInput] = useState(false);
 
   // console.log(prompt)
 
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(URL + "/api/v1/categories");
+      console.log(res.data)
+      setCategories(res.data);
+      if (res.data.length === 0) {
+        setNoResults(true);
+      } 
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  // const categoryPost = async (x) => {
+  //   try {
+  //     const res = await axios.get(URL + "/api/v1/categories" + x.)
+  //     set
+  //   } catch (error) {
+      
+  //   }
+  // }
+
   const showMenu = () => {
     setMenu(!menu);
   };
-
-  const categories = [
-    {
-      name: "Art",
-      id: "1",
-    },
-    {
-      name: "Science",
-      id: "2",
-    },
-    {
-      name: "Cinema",
-      id: "3",
-    },
-    {
-      name: "Design",
-      id: "4",
-    },
-    {
-      name: "Food",
-      id: "5",
-    },
-  ];
 
   const handleSearch = () => {
     if (prompt) {
@@ -76,7 +82,7 @@ const Navbar = () => {
         {categories.map((category) => (
           <Link
             key={category.id}
-            to={`/?cat=${category.id}`}
+            to={`/?cat=${category.name}`}
             className="w-24 text-center text-gray-100 hover:transition ease-in-out delay-150 hover:text-black hover:bg-gray-300 rounded-full bg-cover bg-center"
           >
             <h6>{category.name}</h6>
@@ -103,7 +109,7 @@ const Navbar = () => {
         {userInfo ? (
           <div className="flex space-x-1 items-center">
             <div className="flex space-x-6 pr-2 ">
-              <Link to="/login" className="justify-center">
+              <Link to={"/profile/" + userInfo._id} className="justify-center">
                 <img
                   src={userInfo.userImg}
                   className="w-10 h-10 rounded-full object-cover"

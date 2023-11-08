@@ -20,8 +20,27 @@ const EditPost = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  // const [cat, setCat] = useState("");
   const [cats, setCats] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(URL + "/api/v1/categories");
+      console.log(res.data)
+      setCategories(res.data);
+      if (res.data.length === 0) {
+        setNoResults(true);
+      } else {
+        setNoResults(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const fetchPost = async () => {
     try {
@@ -156,72 +175,21 @@ const EditPost = () => {
                 </div>
               </div>
               <div className="item">
+              <div>
                 <h1>Category</h1>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "art"}
-                    name="cat"
-                    value="art"
-                    id="art"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="art">Art</label>
+                  {categories.map((category) => (
+                <div key={category.id} className="cat">
+                      <input
+                        type="radio"
+                        checked={cats === category.name}
+                        name="cat"
+                        value={category.name}
+                        id={category.name}
+                        onChange={(e) => setCats(e.target.value)}
+                      />
+                      <label htmlFor={category.name}>{category.name}</label>
                 </div>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "science"}
-                    name="cat"
-                    value="science"
-                    id="science"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="science">Science</label>
-                </div>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "technology"}
-                    name="cat"
-                    value="technology"
-                    id="technology"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="technology">Technology</label>
-                </div>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "cinema"}
-                    name="cat"
-                    value="cinema"
-                    id="cinema"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="cinema">Cinema</label>
-                </div>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "design"}
-                    name="cat"
-                    value="design"
-                    id="design"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="design">Design</label>
-                </div>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "food"}
-                    name="cat"
-                    value="food"
-                    id="food"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="food">Food</label>
+                  ))}
                 </div>
               </div>
             </div>

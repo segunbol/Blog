@@ -11,6 +11,7 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const commentRoute = require("./routes/comments");
+const categoriesRoute = require("./routes/categories");
 const { fileURLToPath } = require("url");
 const uploadRouter = require("./routes/uploadRoutes");
 const fileUpload = require('express-fileupload');
@@ -46,6 +47,7 @@ app.use(`${api}/upload`, uploadRouter);
 app.use(`${api}/auth`, authRoute);
 app.use(`${api}/users`, userRoute);
 app.use(`${api}/posts`, postRoute);
+app.use(`${api}/categories`, categoriesRoute);
 app.use(`${api}/comments`, commentRoute);
 
 app.listen(process.env.PORT, () => {

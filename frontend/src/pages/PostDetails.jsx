@@ -159,6 +159,10 @@ console.log(post.userImg)
                     <Comment key={c._id} c={c} post={post} />
                   ))}
                 </div>
+                {/* <video class="w-full h-auto max-w-full" controls>
+                   <source src="https://www.youtube.com/watch?v=ZX3qt0UWifc" type="video/mp4" />
+                        Your browser does not support the video tag.
+                </video> */}
                 {/* write a comment */}
                 <div className="w-full flex flex-col mt-4 md:flex-row">
                   <input

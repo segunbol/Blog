@@ -39,7 +39,7 @@ const Home = () => {
   useEffect(() => {
     fetchPosts();
   }, [search]);
-  
+  console.log(Math.random())
   return (
     <>
       <Navbar />

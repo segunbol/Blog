@@ -27,11 +27,25 @@ const PostSchema = new mongoose.Schema(
     userImg: {
       type: String,
     },
+    // categoriesId:{
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'Categories',
+    //   required: true
+    // },
     categories: {
       type: Array,
+      required: true
     },
   },
   { timestamps: true }
 );
+
+PostSchema.virtual('id').get(function () {
+  return this._id.toHexString();
+});
+
+PostSchema.set('toJSON', {
+  virtuals: true,
+});
 
 module.exports = mongoose.model("Post", PostSchema);

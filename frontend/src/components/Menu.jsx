@@ -1,38 +1,37 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Store } from "../context/UserContext";
 import axios from "axios";
 import { URL } from "../url";
 import { Link, useNavigate } from "react-router-dom";
 
-const categories = 
- [ {
-    name : "Art",
-    id : "1",
-  },
-  {
-    name : "Science",
-    id : "2",
-  },
-  {
-    name : "Cinema",
-    id : "3",
-  },
-  {
-    name : "Design",
-    id : "4",
-  },
-  {
-    name : "Food",
-    id : "5",
-  }
-]
+
 
 const Menu = () => {
   const { dispatch: ctxDispatch } = useContext(Store);
   const {state} = useContext(Store);
   const {userInfo} = state
-  // const { setUser } = useContext(Store);
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
+
+  const fetchCategories = async () => {
+    // setLoader(true);
+    try {
+      const res = await axios.get(URL + "/api/v1/categories");
+      console.log(res.data)
+      setCategories(res.data);
+      if (res.data.length === 0) {
+        setNoResults(true);
+      } 
+      // setLoader(false);
+    } catch (err) {
+      console.log(err);
+      // setLoader(true);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -65,7 +64,7 @@ const Menu = () => {
           <ul className="space-y-2 font-medium">
             {categories.map((category)=> (
               <li key={category.id}>
-                <Link to={`/?cat=${category.id}`} className="flex items-center p-2 text-gray-100 rounded-lg dark:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                <Link to={`/?cat=${category.id}`} className="flex border-b-2 border-gray-700 items-center p-2 text-gray-100  rounded-lg dark:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 group">
                   <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                       <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
                   </svg>
@@ -106,7 +105,7 @@ const Menu = () => {
               <li key={""}>
               <Link to={`/login`} className="flex items-center p-2 text-gray-100 rounded-lg dark:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 group">
               <svg className="flex-shrink-0 w-6 h-6 text-gray-800 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17 16L21 12M21 12L17 8M21 12L7 12M13 16V17C13 18.6569 11.6569 20 10 20H6C4.34315 20 3 18.6569 3 17V7C3 5.34315 4.34315 4 6 4H10C11.6569 4 13 5.34315 13 7V8" stroke="#374151" strokeLinecap="round" strokeLinejoin="round" strokeLidth="2"/>
+                <path d="M17 16L21 12M21 12L17 8M21 12L7 12M13 16V17C13 18.6569 11.6569 20 10 20H6C4.34315 20 3 18.6569 3 17V7C3 5.34315 4.34315 4 6 4H10C11.6569 4 13 5.34315 13 7V8" stroke="#374151" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap" onClick={handleLogout}>Logout</span>
                 {/* <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span> */}

@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 // import { ImCross } from "react-icons/im";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Store } from "../context/UserContext";
 import { URL } from "../url";
 import axios from "axios";
@@ -11,6 +11,8 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../style.scss";
 
+
+
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -18,14 +20,33 @@ const CreatePost = () => {
   const [postImg, setPostImg] = useState(null);
   const { state } = useContext(Store);
   const { userInfo } = state;
-  // const [cat, setCat] = useState("");
+  const [categories, setCategories] = useState([]);
   const [cats, setCats] = useState([]);
   const navigate = useNavigate();
 
-  console.log(title)
-  console.log(desc)
-  // console.log(cat)
   console.log(cats)
+
+  const fetchCategories = async () => {
+    // setLoader(true);
+    try {
+      const res = await axios.get(URL + "/api/v1/categories");
+      console.log(res.data)
+      setCategories(res.data);
+      if (res.data.length === 0) {
+        setNoResults(true);
+      } else {
+        setNoResults(false);
+      }
+      // setLoader(false);
+    } catch (err) {
+      console.log(err);
+      // setLoader(true);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   // const deleteCategory = (i) => {
   //   let updatedCats = [...cats];
@@ -58,7 +79,7 @@ const CreatePost = () => {
   //   setCat("");
   //   setCats(updatedCats);
   // };
-  console.log(userInfo.userImg)
+  
   const handleCreate = async (e) => {
     e.preventDefault();
     const post = {
@@ -70,9 +91,8 @@ const CreatePost = () => {
       categories: cats,
       photo: postImg,
     };
-
+    console.log(post)
     //post upload
-    console.log(postImg);
     try {
       const res = await axios.post(URL + "/api/v1/posts/create", post, {
         withCredentials: true,
@@ -149,73 +169,20 @@ const CreatePost = () => {
               </div>
               <div className="item">
                 <h1>Category</h1>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "art"}
-                    name="cat"
-                    value="art"
-                    id="art"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="art">Art</label>
+                  {categories.map((category) => (
+                <div key={category.id} className="cat">
+                      <input
+                        type="radio"
+                        checked={cats === category.name}
+                        name="cat"
+                        value={category.name}
+                        id={category.name}
+                        onChange={(e) => setCats(e.target.value)}
+                      />
+                      <label htmlFor={category.name}>{category.name}</label>
                 </div>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "science"}
-                    name="cat"
-                    value="science"
-                    id="science"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="science">Science</label>
+                  ))}
                 </div>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "technology"}
-                    name="cat"
-                    value="technology"
-                    id="technology"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="technology">Technology</label>
-                </div>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "cinema"}
-                    name="cat"
-                    value="cinema"
-                    id="cinema"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="cinema">Cinema</label>
-                </div>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "design"}
-                    name="cat"
-                    value="design"
-                    id="design"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="design">Design</label>
-                </div>
-                <div className="cat">
-                  <input
-                    type="radio"
-                    checked={cats === "food"}
-                    name="cat"
-                    value="food"
-                    id="food"
-                    onChange={(e) => setCats(e.target.value)}
-                  />
-                  <label htmlFor="food">Food</label>
-                </div>
-              </div>
             </div>
           </div>
         </div>

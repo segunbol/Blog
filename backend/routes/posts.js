@@ -68,9 +68,8 @@ router.post("/create", verifyToken, async (req, res) => {
 //UPDATE
 router.put("/:id",verifyToken,async (req,res)=>{
     try{
-       
-        const updatedPost=await Post.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
-        res.status(200).json(updatedPost)
+    const updatedPost=await Post.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
+    res.status(200).json(updatedPost)
 
     }
     catch(err){
@@ -136,6 +135,16 @@ router.get("/user/:userId", verifyToken,async (req,res)=>{
     }
 })
 
+router.get('/:category', async (req, res) => {
+    const category = req.params.category;
+    try {
+      const posts = await Post.find({ category }); // Find products with matching category
+      res.json(posts);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
 
 
 module.exports=router

@@ -20,11 +20,8 @@ const Navbar = () => {
   const fetchCategories = async () => {
     try {
       const res = await axios.get(URL + "/api/v1/categories");
-      console.log(res.data)
+      console.log(res.data);
       setCategories(res.data);
-      if (res.data.length === 0) {
-        setNoResults(true);
-      } 
     } catch (err) {
       console.log(err);
     }
@@ -39,7 +36,7 @@ const Navbar = () => {
   //     const res = await axios.get(URL + "/api/v1/categories" + x.)
   //     set
   //   } catch (error) {
-      
+
   //   }
   // }
 
@@ -126,16 +123,20 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="flex space-x-1 items-center">
-          {path === '/login' ? (<div className="flex space-x-4 pr-2 text-center ">
-              <Link to="/register" className="text-center text-gray-100">
-                Register
-              </Link>
-            </div>):(<div className="flex space-x-4 pr-2 text-center ">
-              <Link to="/login" className="text-center text-gray-100">
-                Login
-              </Link>
-            </div>)}
-            
+            {path === "/login" ? (
+              <div className="flex space-x-4 pr-2 text-center ">
+                <Link to="/register" className="text-center text-gray-100">
+                  Register
+                </Link>
+              </div>
+            ) : (
+              <div className="flex space-x-4 pr-2 text-center ">
+                <Link to="/login" className="text-center text-gray-100">
+                  Login
+                </Link>
+              </div>
+            )}
+
             <div onClick={showMenu}>
               <p className="cursor-pointer relative">
                 <FaBars className="h-10 w-10 pr-3 mr-3 text-center text-white " />

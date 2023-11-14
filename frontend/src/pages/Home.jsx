@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
 import { URL } from "../url";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
 import { Store } from "../context/UserContext";
@@ -18,7 +18,8 @@ const Home = () => {
   const {userInfo} = state
   // console.log(user)
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(
+    async () => {
     setLoader(true);
     try {
       const res = await axios.get(URL + "/api/v1/posts/" + search);
@@ -34,12 +35,12 @@ const Home = () => {
       console.log(err);
       setLoader(true);
     }
-  };
-
+  }, [search]
+  ) 
   useEffect(() => {
     fetchPosts();
-  }, [search]);
-  console.log(Math.random())
+  }, [fetchPosts]);
+  
   return (
     <>
       <Navbar />

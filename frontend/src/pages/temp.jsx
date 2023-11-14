@@ -181,42 +181,157 @@
 
 // </>
 
-router.post("/:id", verifyToken, async (req, res) => {
-   const { username, title, desc, categories, userId, photo, userImg } = req.body;
-   console.log("e dey her")
-   try {
-     if (photo) {
-       const uploadedResponse = await cloudinary.uploader.upload(photo);
+// router.post("/:id", verifyToken, async (req, res) => {
+//    const { username, title, desc, categories, userId, photo, userImg } = req.body;
+//    console.log("e dey her")
+//    try {
+//      if (photo) {
+//        const uploadedResponse = await cloudinary.uploader.upload(photo);
  
-       if (uploadedResponse) {
-         const post = new Post({
-           username,
-           categories,
-           userId,
-           userImg,
-           desc,
-           title,
-           photo: uploadedResponse.url,
-         });
+//        if (uploadedResponse) {
+//          const post = new Post({
+//            username,
+//            categories,
+//            userId,
+//            userImg,
+//            desc,
+//            title,
+//            photo: uploadedResponse.url,
+//          });
  
-         const savedPost = await post.save();
-         res.status(200).send(savedPost);
-       }
-     } else {
-       const post = new Post({
-           username,
-           categories,
-           userId,
-           desc,
-           title,
-           photo
-         });
+//          const savedPost = await post.save();
+//          res.status(200).send(savedPost);
+//        }
+//      } else {
+//        const post = new Post({
+//            username,
+//            categories,
+//            userId,
+//            desc,
+//            title,
+//            photo
+//          });
  
-         const savedPost = await post.save();
-         res.status(200).send(savedPost);
-     }
-   } catch (error) {
-     console.log(error);
-     res.status(500).send(error);
-   }
- });
+//          const savedPost = await post.save();
+//          res.status(200).send(savedPost);
+//      }
+//    } catch (error) {
+//      console.log(error);
+//      res.status(500).send(error);
+//    }
+//  });
+
+
+import axios from "axios";
+import Footer from "../components/Footer";
+import HomePosts from "../components/HomePosts";
+import Navbar from "../components/Navbar";
+import { URL, getError } from "../url";
+import { useCallback, useContext, useEffect, useReducer, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import Loader from "../components/Loader";
+import { Store } from "../context/UserContext";
+
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_REQUEST":
+      return { ...state, loading: true };
+    case "FETCH_SUCCESS":
+      return {
+        ...state,
+        products: action.payload.products,
+        page: action.payload.page,
+        pages: action.payload.pages,
+        countProducts: action.payload.countProducts,
+        loading: false,
+      };
+    case "FETCH_FAIL":
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+const Home = () => {
+  const { search } = useLocation();
+  const sp = new URLSearchParams(search); // /search?category=Shirts
+  const category = sp.get("category") || "all";
+  const query = sp.get("query") || "all";
+  const page = sp.get("page") || 1;
+  // const [posts, setPosts] = useState([]);
+  const [noResults, setNoResults] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const { state } = useContext(Store);
+  const {userInfo} = state
+
+  const [{ loading, error, posts, pages, countPost }, dispatch] =
+  useReducer (reducer, {
+    loading: true,
+    error: "",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(`${URL}/api/v1/posts/search?page=${page}&query=${query}&category=${category}`);
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
+      } catch (err) {
+        dispatch({
+          type: "FETCH_FAIL",
+          payload: getError(error),
+        });
+      }
+    };
+    fetchData();
+  }, [category, error, page, query]);
+
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(URL + "/api/v1/categories");
+        setCategories(data);
+      } catch (err) {
+        getError(err);
+      }
+    };
+    fetchCategories();
+  }, [dispatch]);
+
+  const getFilterUrl = (filter) => {
+    const filterPage = filter.page || page;
+    const filterCategory = filter.category || category;
+    const filterQuery = filter.query || query;
+   
+    return `/search?category=${filterCategory}&query=${filterQuery}&page=${filterPage}`;
+  };
+
+  
+  return (
+    <>
+      <Navbar />
+      <div className="lg:px-32 md:px-[50px] min-h-[80vh] bg-gray-800 mt-12" key={Math.random()}>
+        {loader ? (
+          <div className="h-[40vh] flex justify-center items-center">
+            <Loader />
+          </div>
+        ) : !noResults ? (
+          posts.map((post) => (
+            <>
+              <Link key={post._id} to={userInfo ? `/posts/post/${post._id}` : "/login"}>
+                <HomePosts key={post._id} post={post} />
+              </Link>
+            </>
+          ))
+        ) : (
+          <h3 className="text-center font-bold mt-16">No posts available</h3>
+        )}
+      </div>
+      <Footer />
+    </>
+  );
+};
+
+export default Home;

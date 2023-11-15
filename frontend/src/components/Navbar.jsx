@@ -15,12 +15,12 @@ const Navbar = () => {
   const path = useLocation().pathname;
   const [showSearchInput, setShowSearchInput] = useState(false);
 
-  // console.log(prompt)
+  // console.log(path)
 
   const fetchCategories = async () => {
     try {
       const res = await axios.get(URL + "/api/v1/categories");
-      console.log(res.data);
+      // console.log(res.data);
       setCategories(res.data);
     } catch (err) {
       console.log(err);
@@ -62,7 +62,7 @@ const Navbar = () => {
 
   const { state } = useContext(Store);
   const { userInfo } = state;
-  console.log(userInfo);
+  // console.log(userInfo);
   return (
     <div className="z-50 flex items-center bg-gray-900 justify-between lg:px-[20px] md:px-[30px] sm:px-[30px] xs:px-[30px]  fixed top-0 left-0 right-0 py-4">
       <div className="flex items-center space-x-2">
@@ -78,8 +78,8 @@ const Navbar = () => {
       <div className=" items-center lg:flex md:hidden xs:hidden sm:hidden">
         {categories.map((category) => (
           <Link
-            key={category.id}
-            to={`/?cat=${category.name}`}
+            key={category._id}
+            to={`/search?categories=${category.name}`}
             className="w-24 text-center text-gray-100 hover:transition ease-in-out delay-150 hover:text-black hover:bg-gray-300 rounded-full bg-cover bg-center"
           >
             <h6>{category.name}</h6>

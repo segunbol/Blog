@@ -19,7 +19,7 @@ const Register = () => {
         email,
         password,
       });
-      console.log("e reach here");
+      // console.log("e reach here");
       setUsername(res.data.username);
       setEmail(res.data.email);
       setPassword(res.data.password);

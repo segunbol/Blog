@@ -254,7 +254,7 @@ const reducer = (state, action) => {
   }
 };
 
-const Home = () => {
+const Search = () => {
   const { search } = useLocation();
   const sp = new URLSearchParams(search); // /search?category=Shirts
   const category = sp.get("category") || "all";
@@ -275,7 +275,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`${URL}/api/v1/posts/search?page=${page}&query=${query}&category=${category}`);
+        const { data } = await axios.get(`${URL}/api/v1/search?page=${page}&query=${query}&categories=${category}`);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({
@@ -305,33 +305,72 @@ const Home = () => {
     const filterCategory = filter.category || category;
     const filterQuery = filter.query || query;
    
-    return `/search?category=${filterCategory}&query=${filterQuery}&page=${filterPage}`;
+    return `/search?categories=${filterCategory}&query=${filterQuery}&page=${filterPage}`;
   };
-
+  console.log(posts)
   
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="lg:px-32 md:px-[50px] min-h-[80vh] bg-gray-800 mt-12" key={Math.random()}>
         {loader ? (
           <div className="h-[40vh] flex justify-center items-center">
             <Loader />
           </div>
         ) : !noResults ? (
-          posts.map((post) => (
             <>
-              <Link key={post._id} to={userInfo ? `/posts/post/${post._id}` : "/login"}>
-                <HomePosts key={post._id} post={post} />
-              </Link>
+              <Link
+                  className={"all" === category ? "text-bold" : ""}
+                  to={getFilterUrl({ category: "all" })}
+                >
+                  Any
+                </Link>
+              {categories.map((c) => (
+                
+                <Link
+                    key={c._id}
+                    to={getFilterUrl({ category : c.name })}
+                    className={c.name === category ? "text-bold" : ""}
+                  >
+                    {c.name}
+                  </Link>
+              
+              ))}
+              <div className="px-8 md:px-[200px] min-h-[80vh] bg-gray-800">
+        {loader?<div className="h-[40vh] flex justify-center items-center"><Loader/></div>:!noResults?
+        posts.map((post)=>(
+          <>
+          <Link to={userInfo?`/posts/post/${post._id}`:"/login"}>
+          <HomePosts key={post._id} post={post}/>
+          </Link>
+          </>
+          
+        )):<h3 className="text-center font-bold mt-16">No posts available</h3>}
+        </div>
             </>
-          ))
         ) : (
           <h3 className="text-center font-bold mt-16">No posts available</h3>
         )}
       </div>
+      <div>
+                {[...Array(pages).keys()].map((x) => (
+                  <Link
+                    key={x + 1}
+                    className="mx-1"
+                    to={getFilterUrl({ page: x + 1 })}
+                  >
+                    <button
+                      className={Number(page) === x + 1 ? "text-bold" : ""}
+                      variant="light"
+                    >
+                      {x + 1}
+                    </button>
+                  </Link>
+                ))}
+              </div>
       <Footer />
     </>
   );
 };
 
-export default Home;
+export default Search;

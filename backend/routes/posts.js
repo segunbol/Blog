@@ -133,6 +133,7 @@ router.get("/user/:userId", verifyToken, async (req, res) => {
 
 router.get("/:category", async (req, res) => {
   const category = req.params.category;
+  console.log("As e dey go")
   try {
     const posts = await Post.find({ category }); // Find products with matching category
     res.json(posts);
@@ -141,5 +142,49 @@ router.get("/:category", async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
+
+const PAGE_SIZE = 3;
+
+router.get('/search', async (req, res) => {
+    console.log("e reach here")
+    const { query } = req;
+    
+    const pageSize = query.pageSize || PAGE_SIZE;
+    const page = query.page || 1;
+    const categories = query.category || '';
+    const searchQuery = query.query || '';
+
+    const queryFilter =
+      searchQuery && searchQuery !== 'all'
+        ? {
+            name: {
+              $regex: searchQuery,
+              $options: 'i',
+            },
+          }
+        : {};
+    const categoryFilter = categories && categories !== 'all' ? { categories : categories } : {};
+   
+
+    const posts = await Post.find({
+      ...queryFilter,
+      ...categoryFilter,
+    })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+    console.log(posts)
+    const countPosts = await Post.countDocuments({
+      ...queryFilter,
+      ...categoryFilter,
+    });
+    res.send({
+      posts,
+      countPosts,
+      page,
+      pages: Math.ceil(countPosts / pageSize),
+    });
+  })
+;
 
 module.exports = router;

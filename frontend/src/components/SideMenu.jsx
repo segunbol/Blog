@@ -4,15 +4,16 @@ import { URL } from "../url";
 import { Link } from "react-router-dom";
 import { Store } from "../context/UserContext";
 
-const Menu = () => {
+const Menu = ({cat}) => {
   const [posts, setPosts] = useState([]);
   const { state } = useContext(Store);
   const { userInfo } = state;
-
+  console.log(cat)
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(URL + "/api/v1/posts/");
+        const res  = await axios.get(`${URL}/api/v1/search?categories=${cat}`);
+        console.log(res.data)
         setPosts(res.data);
       } catch (err) {
         console.log(err);

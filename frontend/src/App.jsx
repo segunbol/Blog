@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import { StoreProvider } from "./context/UserContext";
 import MyBlogs from "./pages/MyBlogs";
 import "./style.scss"
+import Search from "./pages/temp";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
+        <Route exact path="/search" element={<Search />} />
         <Route exact path="/write" element={<CreatePost />} />
         <Route exact path="/posts/post/:id" element={<PostDetails />} />
         <Route exact path="/edit/:id" element={<EditPost />} />

@@ -8,12 +8,13 @@ const Menu = ({cat}) => {
   const [posts, setPosts] = useState([]);
   const { state } = useContext(Store);
   const { userInfo } = state;
-  console.log(cat)
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res  = await axios.get(`${URL}/api/v1/search?categories=${cat}`);
-        console.log(res.data)
+        console.log(cat)
+        const {res}  = await axios.get(`${URL}/api/v1/search?categories=${cat}`);
+        console.log(res)
         setPosts(res.data);
       } catch (err) {
         console.log(err);

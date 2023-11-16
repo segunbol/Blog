@@ -23,7 +23,7 @@ const PostDetails = () => {
   const [newComment, setNewComment] = useState("");
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
-  console.log(userInfo);
+  // console.log(userInfo);
   const fetchPost = async () => {
     try {
       const res = await axios.get(URL + "/api/v1/posts/" + postId);
@@ -41,7 +41,7 @@ const PostDetails = () => {
       const res = await axios.delete(URL + "/api/v1/posts/" + postId, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
-      console.log(res.data);
+      // console.log(res.data);
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -67,7 +67,7 @@ const PostDetails = () => {
   useEffect(() => {
     fetchPostComments();
   }, [postId]);
-console.log(post.userImg)
+// console.log(post.userImg)
   const postComment = async (e) => {
     e.preventDefault();
 

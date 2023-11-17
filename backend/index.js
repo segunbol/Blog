@@ -72,7 +72,7 @@ app.get(`${api}/search`, async (req, res) => {
     })
       .skip(pageSize * (page - 1))
       .limit(pageSize);
-    console.log(posts)
+    // console.log(posts)
     const countPosts = await Post.countDocuments({
       ...queryFilter,
       ...categoryFilter,

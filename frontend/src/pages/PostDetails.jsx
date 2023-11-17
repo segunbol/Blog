@@ -152,7 +152,7 @@ const PostDetails = () => {
                   }}
                 ></p>{" "}
                 <div className="flex flex-col mt-4">
-                  <h3 className="mt-6 mb-4 font-semibold">Comments:</h3>
+                  <h3 className="mt-6 mb-4 font-semibold text-gray-400">Comments:</h3>
                   {comments?.map((c) => (
                     <Comment key={c._id} c={c} post={post} />
                   ))}

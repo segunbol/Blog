@@ -51,7 +51,7 @@ const MyBlogs = () => {
   return (
     <div>
         <Navbar/>
-        <div className="px-8 md:px-[200px] min-h-[80vh] bg-gray-800">
+        <div className="px-8 md:px-[200px] min-h-[80vh] bg-gray-800 pt-12">
         {loader?<div className="h-[40vh] flex justify-center items-center"><Loader/></div>:!noResults?
         posts.map((post)=>(
           <>
@@ -60,7 +60,7 @@ const MyBlogs = () => {
           </Link>
           </>
           
-        )):<h3 className="text-center font-bold mt-16">No posts available</h3>}
+        )):<h3 className="text-center text-gray-300 font-bold mt-16 pt-32">No posts available</h3>}
         </div>
         <Footer/>
     </div>

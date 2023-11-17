@@ -44,7 +44,7 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className="lg:px-32 md:px-[50px] min-h-[80vh] bg-gray-800 mt-12" key={Math.random()}>
+      <div className="lg:px-32 md:px-[50px] sm:px-[50px] min-h-[80vh] bg-gray-800 mt-12" key={Math.random()}>
         {loader ? (
           <div className="h-[40vh] flex justify-center items-center">
             <Loader />

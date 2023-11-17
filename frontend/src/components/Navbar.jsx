@@ -64,7 +64,7 @@ const Navbar = () => {
   const { userInfo } = state;
   // console.log(userInfo);
   return (
-    <div className="z-50 flex items-center bg-gray-900 justify-between lg:px-[20px] md:px-[30px] sm:px-[30px] xs:px-[30px]  fixed top-0 left-0 right-0 py-4">
+    <div className="z-50 flex items-center bg-gray-900 justify-between lg:px-[20px] md:px-[30px] sm:px-[30px] xs:px-[5px]  fixed top-0 left-0 right-0 py-2">
       <div className="flex items-center space-x-2">
         <img
           src="/Shoboleyoke-logo1.jpg"
@@ -79,7 +79,7 @@ const Navbar = () => {
         {categories.map((category) => (
           <Link
             key={category._id}
-            to={`/search?categories=${category.name}`}
+            to={`/search?${category.name}`}
             className="w-24 text-center text-gray-100 hover:transition ease-in-out delay-150 hover:text-black hover:bg-gray-300 rounded-full bg-cover bg-center"
           >
             <h6>{category.name}</h6>
@@ -87,12 +87,12 @@ const Navbar = () => {
         ))}
       </div>
 
-      <div className="flex justify-center items-center space-x-2 grid-cols-4 absolute right-36">
+      <div className="flex justify-center items-center space-x-2 grid-cols-4 absolute sm:right-32 xs:right-24">
         {showSearchInput && (
           <input
             onKeyUp={handleSearchInputKeyUp}
             onChange={(e) => setPrompt(e.target.value)}
-            className="outline-none px-3 h-10 w-64 rounded text-gray-100 bg-gray-600"
+            className="outline-none px-3 h-10 w-64 xs:h-8 xs:w-48 rounded text-gray-100 bg-gray-600"
             placeholder="Search a post"
             type="text"
           />
@@ -109,14 +109,14 @@ const Navbar = () => {
               <Link to={"/profile/" + userInfo._id} className="justify-center">
                 <img
                   src={userInfo.userImg}
-                  className="w-10 h-10 rounded-full object-cover"
+                  className="w-10 h-10 xs:w-8 xs:h-8 rounded-full object-cover"
                   alt="user"
                 />
               </Link>
             </div>
             <div onClick={showMenu}>
               <p className="cursor-pointer relative">
-                <FaBars className="h-10 w-10 pr-3 mr-3 text-center text-white " />
+                <FaBars className="h-10 w-10 pr-3 mr-3 xs:w-8 xs:h-8 xs:pr-0 xs:mr-0  text-center text-white " />
               </p>
               {menu && <Menu />}
             </div>

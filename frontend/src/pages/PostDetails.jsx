@@ -6,7 +6,7 @@ import Menu from "../components/SideMenu";
 import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
-import { URL } from "../url";
+// import { URL } from "../url";
 import { useContext, useEffect, useState } from "react";
 import { Store } from "../context/UserContext";
 import Loader from "../components/Loader";
@@ -26,7 +26,7 @@ const PostDetails = () => {
   console.log(userInfo);
   const fetchPost = async () => {
     try {
-      const res = await axios.get(URL + "/api/v1/posts/" + postId);
+      const res = await axios.get("/api/v1/posts/" + postId);
       // console.log(res.data)
       setPost(res.data);
     } catch (err) {
@@ -38,7 +38,7 @@ const PostDetails = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.delete(URL + "/api/v1/posts/" + postId, {
+      const res = await axios.delete("/api/v1/posts/" + postId, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       console.log(res.data);
@@ -55,7 +55,7 @@ const PostDetails = () => {
   const fetchPostComments = async () => {
     setLoader(true);
     try {
-      const res = await axios.get(URL + "/api/v1/comments/post/" + postId);
+      const res = await axios.get("/api/v1/comments/post/" + postId);
       setComments(res.data);
       setLoader(false);
     } catch (err) {
@@ -73,7 +73,7 @@ const PostDetails = () => {
 
     try {
       const res = await axios.post(
-        URL + "/api/v1/comments/create",
+       "/api/v1/comments/create",
         {
           comment: newComment,
           author: userInfo.username,

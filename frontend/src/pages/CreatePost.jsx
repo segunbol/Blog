@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 // import { ImCross } from "react-icons/im";
 import { useContext, useEffect, useState } from "react";
 import { Store } from "../context/UserContext";
-import { URL } from "../url";
+// import { URL } from "../url";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -29,14 +29,14 @@ const CreatePost = () => {
   const fetchCategories = async () => {
     // setLoader(true);
     try {
-      const res = await axios.get(URL + "/api/v1/categories");
+      const res = await axios.get("/api/v1/categories");
       console.log(res.data)
       setCategories(res.data);
-      if (res.data.length === 0) {
-        setNoResults(true);
-      } else {
-        setNoResults(false);
-      }
+      // if (res.data.length === 0) {
+      //   setNoResults(true);
+      // } else {
+      //   setNoResults(false);
+      // }
       // setLoader(false);
     } catch (err) {
       console.log(err);
@@ -94,7 +94,7 @@ const CreatePost = () => {
     console.log(post)
     //post upload
     try {
-      const res = await axios.post(URL + "/api/v1/posts/create", post, {
+      const res = await axios.post("/api/v1/posts/create", post, {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${userInfo.token}`,

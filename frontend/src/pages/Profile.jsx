@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import ProfilePosts from "../components/ProfilePosts";
 import axios from "axios";
-import { URL } from "../url";
+// import { URL } from "../url";
 import { Store } from "../context/UserContext";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -23,7 +23,7 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get(URL + "/api/v1/users/" + userInfo._id);
+      const res = await axios.get("/api/v1/users/" + userInfo._id);
       setUsername(res.data.username);
       setUserImg(res.data.userImg);
       setEmail(res.data.email);
@@ -56,7 +56,7 @@ const Profile = () => {
     setUpdated(false);
     try {
       await axios.put(
-        URL + "/api/v1/users/" + userInfo._id,
+        "/api/v1/users/" + userInfo._id,
         { username, email, password, userImg },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -73,7 +73,7 @@ const Profile = () => {
 
   const handleUserDelete = async () => {
     try {
-      await axios.delete(URL + "/api/v1/users/" + userInfo._id, {
+      await axios.delete("/api/v1/users/" + userInfo._id, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
         withCredentials: true,
       });
@@ -88,7 +88,7 @@ const Profile = () => {
   // console.log(userInfo)
   const fetchUserPosts = async () => {
     try {
-      const res = await axios.get(URL + "/api/v1/posts/user/" + userInfo._id, {
+      const res = await axios.get("/api/v1/posts/user/" + userInfo._id, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
         withCredentials: true,
       });

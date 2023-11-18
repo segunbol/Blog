@@ -35,9 +35,9 @@ const HomePosts = ({ post }) => {
         <p className="text-sm text-gray-100 md:text-lg text-justify">
           {getText(post.desc.slice(0, 200) + " ...Read More")}
         </p>
-        <p className="text-sm text-gray-100 md:text-lg text-justify">
+        {/* <p className="text-sm text-gray-100 md:text-lg text-justify">
           This Post has --- comments--- and ---likes---
-        </p>
+        </p> */}
       </div>
     </div>
   );

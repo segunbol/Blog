@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useState } from "react";
 import axios from "axios";
-import { URL } from "../url";
+// import { URL } from "../url";
 import Navbar from "../components/Navbar";
 
 const Register = () => {
@@ -14,7 +14,7 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
-      const res = await axios.post(URL + `/api/v1/auth/register`, {
+      const res = await axios.post( `/api/v1/auth/register`, {
         username,
         email,
         password,

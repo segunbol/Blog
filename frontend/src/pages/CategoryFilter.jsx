@@ -226,33 +226,33 @@ import axios from "axios";
 import Footer from "../components/Footer";
 import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
-import { URL, getError } from "../url";
-import { useCallback, useContext, useEffect, useReducer, useState } from "react";
+// import { URL, getError } from "../url";
+import {  useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
 import { Store } from "../context/UserContext";
 
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return {
-        ...state,
-        products: action.payload.products,
-        page: action.payload.page,
-        pages: action.payload.pages,
-        countProducts: action.payload.countProducts,
-        loading: false,
-      };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
+// const reducer = (state, action) => {
+//   switch (action.type) {
+//     case "FETCH_REQUEST":
+//       return { ...state, loading: true };
+//     case "FETCH_SUCCESS":
+//       return {
+//         ...state,
+//         products: action.payload.products,
+//         page: action.payload.page,
+//         pages: action.payload.pages,
+//         countProducts: action.payload.countProducts,
+//         loading: false,
+//       };
+//     case "FETCH_FAIL":
+//       return { ...state, loading: false, error: action.payload };
 
-    default:
-      return state;
-  }
-};
+//     default:
+//       return state;
+//   }
+// };
 
 const Search = () => {
   const { search } = useLocation();
@@ -278,7 +278,7 @@ const Search = () => {
     setLoader(true)
     const fetchData = async () => {
       try {
-        const res  = await axios.get(`${URL}/api/v1/search?categories=${category}`);
+        const res  = await axios.get(`/api/v1/search?categories=${category}`);
         const {posts} = res.data
         if(posts.length === 0) {
           setNoResults(true)

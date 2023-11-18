@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 // import { ImCross } from "react-icons/im";
 import axios from "axios";
-import { URL } from "../url";
+// import { URL } from "../url";
 import { useNavigate, useParams } from "react-router-dom";
 import { Store } from "../context/UserContext";
 import styled from "styled-components";
@@ -25,14 +25,14 @@ const EditPost = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(URL + "/api/v1/categories");
+      const res = await axios.get("/api/v1/categories");
       console.log(res.data)
       setCategories(res.data);
-      if (res.data.length === 0) {
-        setNoResults(true);
-      } else {
-        setNoResults(false);
-      }
+      // if (res.data.length === 0) {
+      //   setNoResults(true);
+      // } else {
+      //   setNoResults(false);
+      // }
     } catch (err) {
       console.log(err);
     }
@@ -44,7 +44,7 @@ const EditPost = () => {
 
   const fetchPost = async () => {
     try {
-      const res = await axios.get(URL + "/api/v1/posts/" + postId);
+      const res = await axios.get( "/api/v1/posts/" + postId);
       setTitle(res.data.title);
       setDesc(res.data.desc);
       setPostImg(res.data.photo);
@@ -87,7 +87,7 @@ const EditPost = () => {
     //post upload
 
     try {
-      const res = await axios.put(URL + "/api/v1/posts/" + postId, post, {
+      const res = await axios.put("/api/v1/posts/" + postId, post, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
         withCredentials: true,
       });

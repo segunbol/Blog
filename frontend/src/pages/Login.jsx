@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { URL } from "../url";
+// import { URL } from "../url";
 // import { UserContext } from "../context/UserContext";
 import { Store } from "../context/UserContext";
 import Navbar from "../components/Navbar";
@@ -22,7 +22,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const data = await axios.post(
-        URL + "/api/v1/auth/login",
+        "/api/v1/auth/login",
         { email, password },
         { withCredentials: true }
       );

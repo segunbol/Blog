@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar"
 import { useContext, useEffect, useState } from "react"
 import {Store} from "../context/UserContext"
 import axios from "axios"
-import { URL } from "../url"
+// import { URL } from "../url"
 import HomePosts from "../components/HomePosts"
 import Loader from "../components/Loader"
 
@@ -22,7 +22,7 @@ const MyBlogs = () => {
   const fetchPosts=async()=>{
     setLoader(true)
     try{
-      const res=await axios.get(URL+"/api/v1/posts/user/"+userInfo._id,  {
+      const res=await axios.get("/api/v1/posts/user/"+userInfo._id,  {
         headers: { Authorization: `Bearer ${userInfo.token}` },
         withCredentials: true,
       })

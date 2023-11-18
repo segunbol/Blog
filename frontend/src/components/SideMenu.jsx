@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { URL } from "../url";
 import { Link } from "react-router-dom";
 import { Store } from "../context/UserContext";
 
@@ -14,7 +13,7 @@ const Menu = ({cat}) => {
       try {
         // console.log(cat)
         await cat
-        const res  = await axios.get(`${URL}/api/v1/search?categories=${cat}`);
+        const res  = await axios.get(`/api/v1/search?categories=${cat}`);
         const {posts} = res.data
         // console.log(posts)
         setPosts(posts);

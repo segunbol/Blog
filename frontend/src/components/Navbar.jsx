@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from "react";
 import Menu from "./Menu";
 import { Store } from "../context/UserContext";
 import axios from "axios";
-import { URL } from "../url";
 
 const Navbar = () => {
   const [prompt, setPrompt] = useState("");
@@ -19,7 +18,7 @@ const Navbar = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(URL + "/api/v1/categories");
+      const res = await axios.get("/api/v1/categories");
       // console.log(res.data);
       setCategories(res.data);
     } catch (err) {
@@ -88,18 +87,24 @@ const Navbar = () => {
       </div>
 
       <div className="flex justify-center items-center space-x-2 grid-cols-4 absolute sm:right-32 xs:right-24">
-        {showSearchInput && (
-          <input
-            onKeyUp={handleSearchInputKeyUp}
-            onChange={(e) => setPrompt(e.target.value)}
-            className="outline-none px-3 h-10 w-64 xs:h-8 xs:w-48 rounded text-gray-100 bg-gray-600"
-            placeholder="Search a post"
-            type="text"
-          />
+        {path !== "login" && path !== "register" ? (
+          showSearchInput && (
+            <div>
+              <input
+                onKeyUp={handleSearchInputKeyUp}
+                onChange={(e) => setPrompt(e.target.value)}
+                className="outline-none px-3 h-10 w-64 xs:h-8 xs:w-48 rounded text-gray-100 bg-gray-600"
+                placeholder="Search a post"
+                type="text"
+              />
+              <p onClick={handleSearchIconClick} className="cursor-pointer">
+                <BsSearch className="text-white" />
+              </p>
+            </div>
+          )
+        ) : (
+          <p>Glad To See You</p>
         )}
-        <p onClick={handleSearchIconClick} className="cursor-pointer">
-          <BsSearch className="text-white" />
-        </p>
       </div>
 
       <div className="md:flex items-center justify-center space-x-2 md:space-x-4 ">
@@ -107,20 +112,19 @@ const Navbar = () => {
           <div className="flex space-x-1 items-center">
             <div className="flex space-x-6 pr-2 ">
               <Link to={"/profile/" + userInfo._id} className="justify-center">
-              {userInfo.userImg ? (
-                <img
-                  src={userInfo.userImg}
-                  className="w-10 h-10 xs:w-8 xs:h-8 rounded-full object-cover"
-                  alt="user"
-                />
-              ) : (
-                <img
-                  src="/user.png"
-                  className="w-10 h-10 xs:w-8 xs:h-8 rounded-full object-cover"
-                  alt="user"
-                />
-              )}
-                
+                {userInfo.userImg ? (
+                  <img
+                    src={userInfo.userImg}
+                    className="w-10 h-10 xs:w-8 xs:h-8 rounded-full object-cover"
+                    alt="user"
+                  />
+                ) : (
+                  <img
+                    src="/user.png"
+                    className="w-10 h-10 xs:w-8 xs:h-8 rounded-full object-cover"
+                    alt="user"
+                  />
+                )}
               </Link>
             </div>
             <div onClick={showMenu}>

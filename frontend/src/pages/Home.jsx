@@ -2,7 +2,7 @@ import axios from "axios";
 import Footer from "../components/Footer";
 import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
-import { URL } from "../url";
+// import { URL } from "../url";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
@@ -22,7 +22,7 @@ const Home = () => {
     async () => {
     setLoader(true);
     try {
-      const res = await axios.get(URL + "/api/v1/posts/" + search);
+      const res = await axios.get("/api/v1/posts/" + search);
       console.log(res.data)
       setPosts(res.data);
       if (res.data.length === 0) {

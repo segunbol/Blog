@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Store } from "../context/UserContext";
 import axios from "axios";
-import { URL } from "../url";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -16,12 +15,12 @@ const Menu = () => {
   const fetchCategories = async () => {
     // setLoader(true);
     try {
-      const res = await axios.get(URL + "/api/v1/categories");
+      const res = await axios.get("/api/v1/categories");
       console.log(res.data)
       setCategories(res.data);
-      if (res.data.length === 0) {
-        setNoResults(true);
-      } 
+      // if (res.data.length === 0) {
+      //   setNoResults(true);
+      // } 
       // setLoader(false);
     } catch (err) {
       console.log(err);
@@ -35,7 +34,7 @@ const Menu = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get(URL + "/api/v1/auth/logout", {
+      await axios.get("/api/v1/auth/logout", {
         withCredentials: true ,
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });

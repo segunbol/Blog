@@ -32,15 +32,7 @@ const connectDB = async () => {
 dotenv.config();
 const backendRoot = __dirname;
 const frontendDistPath = path.join(backendRoot, "..", "frontend", "dist");
-
 app.use(express.static(frontendDistPath));
-
-app.get("*", (req, res) => {
-  console.log(req);
-  const data = path.join(frontendDistPath, "index.html");
-  console.log(data);
-  res.sendFile(path.join(data));
-});
 app.use(morgan("tiny"));
 app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));
@@ -48,7 +40,6 @@ const corsOptions = {
   origin: "http://localhost:3000",
   credentials: true,
 };
-
 app.use(cors(corsOptions));
 app.use(
   "/publicfiles/uploads",
@@ -69,6 +60,13 @@ app.use(`${api}/posts`, postRoute);
 
 app.use(`${api}/categories`, categoriesRoute);
 app.use(`${api}/comments`, commentRoute);
+
+app.get("*", (req, res) => {
+  
+  const data = path.join(frontendDistPath, "index.html");
+  console.log(data);
+  res.sendFile(path.join(data));
+});
 
 app.listen(process.env.PORT, () => {
   connectDB();

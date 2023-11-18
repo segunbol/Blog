@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const __dirname = path.resolve();
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const authRoute = require("./routes/auth");
@@ -32,7 +33,7 @@ const connectDB = async () => {
 dotenv.config();
 app.use(express.static(path.join(__dirname, '/frontend/dist')))
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
 });
 app.use(morgan("tiny"));
 app.use(cookieParser());

@@ -28,17 +28,28 @@ const connectDB = async () => {
   }
 };
 
-
 //middlewares
 dotenv.config();
-app.use(express.static(path.join(__dirname, '/frontend/dist')))
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+const backendRoot = __dirname;
+const frontendDistPath = path.join(backendRoot, "..", "frontend", "dist");
+
+app.use(express.static(frontendDistPath));
+
+app.get("*", (req, res) => {
+  console.log(req);
+  const data = path.join(frontendDistPath, "index.html");
+  console.log(data);
+  res.sendFile(path.join(data));
 });
 app.use(morgan("tiny"));
 app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));
-app.use(cors({ origin: "http://127.0.0.1:5173", credentials: true }));
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(
   "/publicfiles/uploads",
   express.static(__dirname + "./publicfiles/uploads")

@@ -9,7 +9,7 @@ import Profile from "./pages/Profile";
 import { StoreProvider } from "./context/UserContext";
 import MyBlogs from "./pages/MyBlogs";
 import "./style.scss"
-import Search from "./pages/temp";
+import Search from "./pages/CategoryFilter";
 
 const App = () => {
   return (

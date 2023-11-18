@@ -340,7 +340,7 @@ const Search = () => {
           </>
         ))
       ) : (
-        <h3 className="text-center text-gray-300 pt-20 font-bold mt-16">No posts available</h3>
+        <h3 className="text-center text-gray-300 pt-20 font-bold mt-10">No posts available</h3>
       )}
     </div>
     <Footer />

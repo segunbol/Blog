@@ -23,7 +23,7 @@ const PostDetails = () => {
   const [newComment, setNewComment] = useState("");
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
-  // console.log(userInfo);
+  console.log(userInfo);
   const fetchPost = async () => {
     try {
       const res = await axios.get(URL + "/api/v1/posts/" + postId);
@@ -41,7 +41,7 @@ const PostDetails = () => {
       const res = await axios.delete(URL + "/api/v1/posts/" + postId, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
-      // console.log(res.data);
+      console.log(res.data);
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -67,7 +67,7 @@ const PostDetails = () => {
   useEffect(() => {
     fetchPostComments();
   }, [postId]);
-// console.log(post.userImg)
+  // console.log(post.userImg)
   const postComment = async (e) => {
     e.preventDefault();
 
@@ -112,11 +112,25 @@ const PostDetails = () => {
               <div className="content ">
                 <img src={post?.photo} alt="" className="object" />
                 <div className="user">
-                  {post.userImg && <img src={post.userImg} alt="" />}
+                  {userInfo.userImg ? (
+                    <img src={userInfo.userImg} className="" alt="user" />
+                  ) : (
+                    <img
+                      src="/user.png"
+                      className="w-10 h-10 xs:w-8 xs:h-8 rounded-full object-cover"
+                      alt="user"
+                    />
+                  )}
                   <div className="info text-orange-600">
                     <span>@{post.username}</span>
-                    <span>created : {new Date(post.updatedAt).toString().slice(0, 15)}{"  "}</span>
-                    <span>{new Date(post.updatedAt).toString().slice(16, 24)}</span>
+                    <span>
+                      created :{" "}
+                      {new Date(post.updatedAt).toString().slice(0, 15)}
+                      {"  "}
+                    </span>
+                    <span>
+                      {new Date(post.updatedAt).toString().slice(16, 24)}
+                    </span>
                   </div>
                   {userInfo?._id === post?.userId && (
                     <div className="edit">
@@ -127,7 +141,7 @@ const PostDetails = () => {
                         <BiEdit />
                       </p>
                       <p className="cursor-pointer" onClick={handleDeletePost}>
-                        <MdDelete className="bg-orange-900"/>
+                        <MdDelete className="bg-orange-900" />
                       </p>
                     </div>
                   )}
@@ -136,14 +150,9 @@ const PostDetails = () => {
                 <div className="flex items-center mt-8 space-x-4 font-semibold">
                   <p>Categories:</p>
                   <div className="flex justify-center items-center space-x-2">
-                
-                        <div
-      
-                          className="bg-gray-300 rounded-lg px-3 py-1"
-                        >
-                          {post.categories}
-                        </div>
-                      
+                    <div className="bg-gray-300 rounded-lg px-3 py-1">
+                      {post.categories}
+                    </div>
                   </div>
                 </div>
                 <p
@@ -152,7 +161,9 @@ const PostDetails = () => {
                   }}
                 ></p>{" "}
                 <div className="flex flex-col mt-4">
-                  <h3 className="mt-6 mb-4 font-semibold text-gray-400">Comments:</h3>
+                  <h3 className="mt-6 mb-4 font-semibold text-gray-400">
+                    Comments:
+                  </h3>
                   {comments?.map((c) => (
                     <Comment key={c._id} c={c} post={post} />
                   ))}
@@ -179,7 +190,6 @@ const PostDetails = () => {
                 </div>
               </div>
               <Menu cat={post.categories} />
-              
             </div>
           </div>
         </div>

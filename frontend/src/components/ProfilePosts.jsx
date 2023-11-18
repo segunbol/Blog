@@ -9,13 +9,13 @@ const ProfilePosts = ({p}) => {
 
   // console.log(p)
   return (
-    <div className="w-full flex mt-8 space-x-6">
+    <div className="w-full mt-8 space-x-6 xl:flex lg:flex md:flex lg:space-x-4 md:space-x-4 sm:flex sm:space-x-4 xs:block xs:p-0 xs:space-x-0 lg:py-10">
     {/* left */}
-    <div className="w-[35%] h-[200px] flex justify-center items-center">
-    <img src={p.photo} alt="" className="h-full w-full object-cover"/>
+    <div className="lg:w-[35%] h-[200px] xs:w-[100%] flex justify-center items-center">
+    <img src={p.photo} alt="" className="h-full w-full object-cover rounded-lg"/>
     </div>
     {/* right */}
-    <div className="flex flex-col w-[65%]">
+    <div className="flex flex-col lg:w-[65%] text-justify xs:w-[100%]">
       <h1 className="text-xl text-gray-400 font-bold md:mb-2 mb-1 md:text-2xl">
       {p.title.slice(0,50)+" ..."}
       </h1>

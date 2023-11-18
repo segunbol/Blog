@@ -127,7 +127,9 @@ const Profile = () => {
                     <img src={userImg} alt="error!" />
                   </>
                 ) : (
-                  <p>User image upload preview will appear here!</p>
+                  <>
+                    <img src="/user.png" alt="error!" />
+                  </>
                 )}
               </ImagePreview>
               <input

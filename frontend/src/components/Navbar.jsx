@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
 import Menu from "./Menu";
 import { Store } from "../context/UserContext";
@@ -76,11 +76,11 @@ const Navbar = () => {
         </h1>
       </div>
       <div className=" items-center lg:flex md:hidden xs:hidden sm:hidden">
-        {categories.map((category) => (
+        {categories.slice(0, 4).map((category) => (
           <Link
             key={category._id}
             to={`/search?${category.name}`}
-            className="w-24 text-center text-gray-100 hover:transition ease-in-out delay-150 hover:text-black hover:bg-gray-300 rounded-full bg-cover bg-center"
+            className="w-24 text-center text-gray-100 hover:transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 rounded-full bg-cover bg-center"
           >
             <h6>{category.name}</h6>
           </Link>
@@ -107,17 +107,28 @@ const Navbar = () => {
           <div className="flex space-x-1 items-center">
             <div className="flex space-x-6 pr-2 ">
               <Link to={"/profile/" + userInfo._id} className="justify-center">
+              {userInfo.userImg ? (
                 <img
                   src={userInfo.userImg}
                   className="w-10 h-10 xs:w-8 xs:h-8 rounded-full object-cover"
                   alt="user"
                 />
+              ) : (
+                <img
+                  src="/user.png"
+                  className="w-10 h-10 xs:w-8 xs:h-8 rounded-full object-cover"
+                  alt="user"
+                />
+              )}
+                
               </Link>
             </div>
             <div onClick={showMenu}>
-              <p className="cursor-pointer relative">
-                <FaBars className="h-10 w-10 pr-3 mr-3 xs:w-8 xs:h-8 xs:pr-0 xs:mr-0  text-center text-white " />
-              </p>
+              {menu ? (
+                <FaTimes className="h-10 w-10 pr-3 mr-3 xs:w-8 xs:h-8 xs:pr-0 xs:mr-0 text-center text-white" />
+              ) : (
+                <FaBars className="h-10 w-10 pr-3 mr-3 xs:w-8 xs:h-8 xs:pr-0 xs:mr-0 text-center text-white" />
+              )}
               {menu && <Menu />}
             </div>
           </div>
@@ -138,9 +149,11 @@ const Navbar = () => {
             )}
 
             <div onClick={showMenu}>
-              <p className="cursor-pointer relative">
-                <FaBars className="h-10 w-10 pr-3 mr-3 text-center text-white " />
-              </p>
+              {menu ? (
+                <FaTimes className="h-10 w-10 pr-3 mr-3 xs:w-8 xs:h-8 xs:pr-0 xs:mr-0 text-center text-white" />
+              ) : (
+                <FaBars className="h-10 w-10 pr-3 mr-3 xs:w-8 xs:h-8 xs:pr-0 xs:mr-0 text-center text-white" />
+              )}
               {menu && <Menu />}
             </div>
           </div>

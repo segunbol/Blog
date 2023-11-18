@@ -87,24 +87,18 @@ const Navbar = () => {
       </div>
 
       <div className="flex justify-center items-center space-x-2 grid-cols-4 absolute sm:right-32 xs:right-24">
-        {path !== "login" && path !== "register" ? (
-          showSearchInput && (
-            <div>
-              <input
-                onKeyUp={handleSearchInputKeyUp}
-                onChange={(e) => setPrompt(e.target.value)}
-                className="outline-none px-3 h-10 w-64 xs:h-8 xs:w-48 rounded text-gray-100 bg-gray-600"
-                placeholder="Search a post"
-                type="text"
-              />
-              <p onClick={handleSearchIconClick} className="cursor-pointer">
-                <BsSearch className="text-white" />
-              </p>
-            </div>
-          )
-        ) : (
-          <p>Glad To See You</p>
+        {showSearchInput && (
+          <input
+            onKeyUp={handleSearchInputKeyUp}
+            onChange={(e) => setPrompt(e.target.value)}
+            className="outline-none px-3 h-10 w-64 xs:h-8 xs:w-48 rounded text-gray-100 bg-gray-600"
+            placeholder="Search a post"
+            type="text"
+          />
         )}
+        <p onClick={handleSearchIconClick} className="cursor-pointer">
+          <BsSearch className="text-white" />
+        </p>
       </div>
 
       <div className="md:flex items-center justify-center space-x-2 md:space-x-4 ">

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa"
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 // import { URL } from "../url";
 import Navbar from "../components/Navbar";
@@ -13,39 +13,53 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [password2, setPassword2] = useState("");
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-
   const handleShowPassword = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
   const handleRegister = async () => {
-    if (password !== password2) {
-      alert("Passwords Dont Match")
-      setPassword("")
-      setPassword2("")
-      return
-    } else {
-      try {
-      const res = await axios.post( `/api/v1/auth/register`, {
-        username,
-        email,
-        password,
-        password2
-      });
-      // console.log("e reach here");
-      setUsername(res.data.username);
-      setEmail(res.data.email);
-      setPassword(res.data.password);
-      // setPassword2()
-      setError(false);
-      navigate("/login");
-    } catch (err) {
+    const isEmailValid = /\S+@\S+\.\S+/.test(email);
+    if (!username || !email || !password || !password2) {
+      // alert("Please fill All Fields");
+      setErrorMessage("Please fill All Fields");
       setError(true);
-      console.log(err);
+      return;
     }
+    if (!isEmailValid) {
+      setErrorMessage("Please enter valid email");
+      setError(true);
+      return;
     }
-    
+    if (password !== password2) {
+      // alert("Passwords Don't Match");
+      setErrorMessage("Passwords Don't Match");
+      setError(true);
+      return;
+    }
+
+    if (username && email && password && password2) {
+      try {
+        const res = await axios.post(`/api/v1/auth/register`, {
+          username,
+          email,
+          password,
+          password2,
+        });
+        // console.log("e reach here");
+        setUsername(res.data.username);
+        setEmail(res.data.email);
+        setPassword(res.data.password);
+        // setPassword2()
+        setError(false);
+        navigate("/login");
+      } catch (err) {
+        setErrorMessage(err.response.data);
+        setError(true);
+        console.log(err.response.data);
+      }
+    }
   };
 
   return (
@@ -104,7 +118,9 @@ const Register = () => {
             Register
           </button>
           {error && (
-            <h3 className="text-red-500 text-sm ">Something went wrong</h3>
+            <h3 className="text-red-500 text-sm ">
+              Something went wrong: {errorMessage}
+            </h3>
           )}
           <div className="flex justify-center items-center space-x-3">
             <p>Already have an account?</p>

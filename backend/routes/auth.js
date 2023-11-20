@@ -8,18 +8,24 @@ const jwt = require("jsonwebtoken");
 router.post("/register", async (req, res) => {
   try {
     const { username, email, password, password2 } = req.body;
-    if (password !== password2) {
-      console.log(password, password2);
-      return res.json("The Passwords Dont Match");
+    // const isEmailValid = /\S+@\S+\.\S+/.test(email);
+    const newUserName = await User.findOne({ username: username });
+    const newUserEmail = await User.findOne({ email: email });
+    if(newUserName || newUserEmail){
+      console.log("Username or Email Already Exist");
+      return res.status(400).json("Username or Email Already Exist");
     }
+
     if (!username || !email || !password || !password2) {
       console.log("Please fill in all fields");
       return res.status(400).json("Please fill in all fields");
     }
+
     if (password !== password2) {
-      console.log("The passwords don't match");
-      return res.status(400).json("The passwords don't match");
+      console.log(password, password2);
+      return res.status(400).json("The Passwords Dont Match");
     }
+  
     if ((username, email, password, password2)) {
       if (password === password2) {
         const salt = await bcrypt.genSalt(10);
@@ -30,6 +36,7 @@ router.post("/register", async (req, res) => {
       }
     }
   } catch (err) {
+    console.log(err)
     res.status(500).json(err);
   }
 });

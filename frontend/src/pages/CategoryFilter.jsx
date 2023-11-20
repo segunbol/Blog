@@ -227,10 +227,10 @@ import Footer from "../components/Footer";
 import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
 // import { URL, getError } from "../url";
-import {  useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
-import { Store } from "../context/UserContext";
+// import { Store } from "../context/UserContext";
 
 
 // const reducer = (state, action) => {
@@ -265,8 +265,8 @@ const Search = () => {
   const [post, setPost] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [loader, setLoader] = useState(false);
-  const { state } = useContext(Store);
-  const {userInfo} = state
+  // const { state } = useContext(Store);
+  // const {userInfo} = state
 
   // const [{ loading, error, posts, pages, countPost }, dispatch] =
   // useReducer (reducer, {

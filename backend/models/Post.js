@@ -24,6 +24,15 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isAdmin: {
+      type: Boolean,
+    },
+    isSuperAdmin: {
+      type: Boolean,
+    },
+    isCreator: {
+      type: Boolean,
+    },
     userImg: {
       type: String,
     },

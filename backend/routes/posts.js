@@ -32,7 +32,7 @@ router.post("/create", verifyToken, async (req, res) => {
   try {
     if (photo) {
       const uploadedResponse = await cloudinary.uploader.upload(photo);
-
+      console.log("e enter here")
       if (uploadedResponse) {
         const post = new Post({
           username,

@@ -23,7 +23,7 @@ const Menu = ({cat}) => {
     };
     fetchData();
   }, [cat]);
-
+  
   return (
     <>
       <div className="menu">

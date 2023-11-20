@@ -19,20 +19,39 @@ const PostDetails = () => {
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [comments, setComments] = useState([]);
-  // const [comment, setComment] = useState("");
+  const [writerImage, setWriterImage] = useState("");
   const [newComment, setNewComment] = useState("");
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
-  console.log(userInfo);
-  const fetchPost = async () => {
-    try {
-      const res = await axios.get("/api/v1/posts/" + postId);
-      // console.log(res.data)
-      setPost(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+  // console.log(userInfo);
+  // const fetchPost = async () => {
+  //   try {
+  //     const res = await axios.get("/api/v1/posts/" + postId);
+  //     console.log(res.data)
+  //     setPost(res.data);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const fetchPost = () => {
+    axios.get("/api/v1/posts/" + postId)
+      .then((postResponse) => {
+        const userId = postResponse.data.userId;
+        setPost(postResponse.data)
+        return axios.get("/api/v1/users/" + userId);
+      })
+      .then((userResponse) => {
+        console.log(userResponse.data);
+        setWriterImage(userResponse.data.userImg);
+        ;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  console.log(writerImage)
 
   const handleDeletePost = async (e) => {
     e.preventDefault();
@@ -112,8 +131,8 @@ const PostDetails = () => {
               <div className="content ">
                 <img src={post?.photo} alt="" className="object" />
                 <div className="user">
-                  {userInfo.userImg ? (
-                    <img src={userInfo.userImg} className="" alt="user" />
+                  {writerImage ? (
+                    <img src={writerImage} className="" alt="user" />
                   ) : (
                     <img
                       src="/user.png"

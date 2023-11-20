@@ -3,10 +3,10 @@ import Footer from "../components/Footer";
 import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
 // import { URL } from "../url";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback,  useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
-import { Store } from "../context/UserContext";
+
 
 const Home = () => {
   const { search } = useLocation();
@@ -14,8 +14,8 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [loader, setLoader] = useState(false);
-  const { state } = useContext(Store);
-  const {userInfo} = state
+  // const { state } = useContext(Store);
+  // const {userInfo} = state
   // console.log(user)
 
   const fetchPosts = useCallback(

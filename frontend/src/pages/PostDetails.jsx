@@ -35,23 +35,23 @@ const PostDetails = () => {
   // };
 
   const fetchPost = () => {
-    axios.get("/api/v1/posts/" + postId)
+    axios
+      .get("/api/v1/posts/" + postId)
       .then((postResponse) => {
         const userId = postResponse.data.userId;
-        setPost(postResponse.data)
+        setPost(postResponse.data);
         return axios.get("/api/v1/users/" + userId);
       })
       .then((userResponse) => {
         console.log(userResponse.data);
         setWriterImage(userResponse.data.userImg);
-        ;
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  console.log(writerImage)
+  console.log(writerImage);
 
   const handleDeletePost = async (e) => {
     e.preventDefault();
@@ -89,10 +89,17 @@ const PostDetails = () => {
   // console.log(post.userImg)
   const postComment = async (e) => {
     e.preventDefault();
-
+    if (!userInfo) {
+      await new Promise((resolve) => {
+        localStorage.setItem("redirectDestination", "/posts/post/" + postId);
+        resolve();
+      });
+      navigate("/login");
+      return;
+    }
     try {
       const res = await axios.post(
-       "/api/v1/comments/create",
+        "/api/v1/comments/create",
         {
           comment: newComment,
           author: userInfo.username,
@@ -202,11 +209,24 @@ const PostDetails = () => {
                   />
                   <button
                     onClick={postComment}
-                    className="bg-gray-900 text-sm text-gray-100 px-2 py-2 md:w-[20%] mt-4 md:mt-0"
+                    className={`bg-gray-900 sm:w-full text-sm rounded-md mx-2 bold text-gray-100 px-2 py-2 md:w-[20%] mt-4 md:mt-0 ${
+                      !userInfo
+                        ? "hover:bg-orange-900 hover:text-gray-900"
+                        : "hover:bg-orange-900 hover:text-gray-900"
+                    }`}
                   >
-                    Add Comment
+                    {!userInfo ? (
+                      <p className="relative">Go to Login</p>
+                    ) : (
+                      <p className="relative">Add Comment</p>
+                    )}
                   </button>
                 </div>
+                {!userInfo ? (
+                  <p className="text-orange-500 relative">
+                    Kindly sign in to share your comment
+                  </p>
+                ) : null}
               </div>
               <Menu cat={post.categories} />
             </div>

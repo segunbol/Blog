@@ -334,7 +334,7 @@ const Search = () => {
       ) : !noResults ? (
         post.map((post) => (
           <>
-            <Link key={post._id} to={userInfo ? `/posts/post/${post._id}` : "/login"}>
+            <Link key={post._id} to={`/posts/post/${post._id}`}>
               <HomePosts key={post._id} post={post} />
             </Link>
           </>

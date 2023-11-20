@@ -29,7 +29,11 @@ const Login = () => {
       // console.log(data.data);
       ctxDispatch({ type: 'USER_SIGNIN', payload: (data.data) });
       localStorage.setItem('userInfo', JSON.stringify(data.data));
-      navigate('/');
+      
+      const redirectDestination = localStorage.getItem('redirectDestination') || '/';
+      localStorage.removeItem('redirectDestination'); // Clear the stored destination
+
+      navigate(redirectDestination);
     } catch (err) {
       setError(err);
     }
@@ -37,7 +41,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/');
+      navigate("/");
     }
   }, [navigate, userInfo]);
   return (

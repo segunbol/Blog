@@ -3,6 +3,9 @@ const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/sendEmail");
+const Token = require("../models/Token")
+const crypto = require("crypto");
 
 //REGISTER
 router.post("/register", async (req, res) => {
@@ -32,12 +35,53 @@ router.post("/register", async (req, res) => {
         const hashedPassword = await bcrypt.hashSync(password, salt);
         const newUser = new User({ username, email, password: hashedPassword });
         const savedUser = await newUser.save();
-        res.status(200).json(savedUser);
+        const userId = savedUser._id
+        const userEmail = savedUser.email
+
+        let token = await new Token({
+          userId: userId,
+          token: crypto.randomBytes(32).toString("hex"),
+        }).save();
+
+        const message = `http://localhost:3000/api/v1/auth/verify/${userId}/${token.token}`;
+        await sendEmail(userEmail, "Verify Email", message);
+
+        res.status(200).json(`Hey ${savedUser.username}, an email has been sent to ${userEmail} for verification`);
       }
     }
   } catch (err) {
     console.log(err)
     res.status(500).json(err);
+  }
+});
+
+router.get("/verify/:id/:token", async (req, res) => {
+  console.log("e reachest here")
+  try {
+    const user = await User.findOne({ _id: req.params.id });
+    
+    if (!user) return res.status(400).send("Invalid link");
+
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
+    });
+    
+    if (!token) return res.status(400).send("Invalid link");
+
+    const usel = await User.updateOne({ _id: user._id, verified: true });
+    console.log(usel.verified)
+
+    await Token.findByIdAndRemove(token._id);
+    const toke = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
+    });
+
+    console.log(toke.token)
+    res.send("email verified sucessfully");
+  } catch (error) {
+    res.status(400).send("An error occured");
   }
 });
 
@@ -47,10 +91,39 @@ router.post("/login", async (req, res) => {
   try {
     // console.log(req.body)
     const user = await User.findOne({ email: req.body.email });
-
+    
     if (!user) {
       return res.status(404).json("User not found!");
     }
+
+    if (!user.verified) {
+			let token = await Token.findOne({ userId: user._id });
+			if (token) {
+        await Token.findByIdAndRemove(token._id)
+        console.log("auth")
+				token = await new Token({
+					userId: user._id,
+					token: crypto.randomBytes(32).toString("hex"),
+				}).save();
+				const url = `http://localhost:3000/api/v1/auth/verify/${user.id}/${token.token}`;
+        
+				await sendEmail(user.email, "Verify Email", url);
+			}
+      if (!token) {
+        console.log("auth2")
+				token = await new Token({
+					userId: user._id,
+					token: crypto.randomBytes(32).toString("hex"),
+				}).save();
+				const url = `http://localhost:3000/api/v1/auth/verify/${user.id}/${token.token}`;
+        
+				await sendEmail(user.email, "Verify Email", url);
+			}
+
+			return res
+				.status(400)
+				.send({ message: "An Email sent to your account please verify" });
+		}
     const match = await bcrypt.compare(req.body.password, user.password);
 
     if (!match) {

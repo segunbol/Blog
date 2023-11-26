@@ -43,7 +43,7 @@ router.post("/register", async (req, res) => {
           token: crypto.randomBytes(32).toString("hex"),
         }).save();
 
-        const link = `https://shoboloyoke.onrender.com/api/v1/auth/verify/${user.id}/${token.token}`;
+        const link = `https://shoboloyoke.onrender.com/api/v1/auth/verify/${userId}/${token.token}`;
         const subject = "Confirm Your Email";
         let result = username.charAt(0).toUpperCase() + username.slice(1);
         console.log(result);

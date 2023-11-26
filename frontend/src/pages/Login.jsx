@@ -11,12 +11,18 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("")
+  const [verification, setVerification] = useState(false)
   // const { setUser } = useContext(UserContext);
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   // console.log(userInfo.data._id);
   // console.log(state);
   const navigate = useNavigate();
+
+  const handleResend = () => {
+    setVerification(false)
+  }
   
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,7 +32,7 @@ const Login = () => {
         { email, password },
         { withCredentials: true }
       );
-      // console.log(data.data);
+      
       ctxDispatch({ type: 'USER_SIGNIN', payload: (data.data) });
       localStorage.setItem('userInfo', JSON.stringify(data.data));
       
@@ -35,7 +41,12 @@ const Login = () => {
 
       navigate(redirectDestination);
     } catch (err) {
+      if(err.response.data === "Enter Password to resend verification"){
+        setVerification(true)
+      }
+      setErrorMessage(err.response.data)
       setError(err);
+      // navigate("/verification")
     }
   };
 
@@ -50,7 +61,8 @@ const Login = () => {
         <Navbar />
       </div>
       <div className="w-full flex justify-center items-center h-[80vh]  bg-gradient-to-r from-slate-900 via-purple-700 to-slate-800">
-        <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
+        {!verification ? (
+          <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
           <h1 className="text-xl font-bold text-left">
             Log in to your account
           </h1>
@@ -73,7 +85,7 @@ const Login = () => {
             Log in
           </button>
           {error && (
-            <h3 className="text-red-500 text-sm ">Something went wrong</h3>
+            <h3 className="text-red-500 text-sm text-center font-bold">{errorMessage}</h3>
           )}
           <div className="flex justify-center items-center space-x-3">
             <p>New here?</p>
@@ -82,6 +94,18 @@ const Login = () => {
             </p>
           </div>
         </div>
+        ):(
+          <div className="flex flex-col justify-center items-center space-y-4 lg:w-full md:w-[25%]">
+          <h1 className="text-xl font-bold text-center text-gray-100">A Verification Link has been sent to your email</h1>
+          <div className="flex justify-center items-center space-x-3">
+            <p className="text-gray-100 semi-bold">Didnt Recieve an Email? </p>
+            <p className="text-gray-500 hover:text-gray-900">
+            </p>
+            <button className="text-orange-600 font-bold" onClick={handleResend}>Click Here To Resend Link</button>
+          </div>
+        </div>
+        )}
+        
       </div>
       <Footer />
     </>

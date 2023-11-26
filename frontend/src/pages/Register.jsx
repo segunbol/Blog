@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -14,11 +14,15 @@ const Register = () => {
   const [password2, setPassword2] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
+  const [verification, setVerification] = useState(false)
+  // const navigate = useNavigate();
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+  const handleResend = () => {
+    setVerification(false)
+  }
   const handleRegister = async () => {
     const isEmailValid = /\S+@\S+\.\S+/.test(email);
     if (!username || !email || !password || !password2) {
@@ -53,7 +57,7 @@ const Register = () => {
         setPassword(res.data.password);
         // setPassword2()
         setError(false);
-        navigate("/login");
+        setVerification(true);
       } catch (err) {
         setErrorMessage(err.response.data);
         setError(true);
@@ -68,7 +72,8 @@ const Register = () => {
         <Navbar />
       </div>
       <div className="w-full flex justify-center items-center h-[80vh] bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900">
-        <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
+        {!verification ? (
+          <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
           <h1 className="text-xl font-bold text-left">Create an account</h1>
           <input
             onChange={(e) => setUsername(e.target.value)}
@@ -129,6 +134,19 @@ const Register = () => {
             </p>
           </div>
         </div>
+        ):(
+          <div className="flex flex-col justify-center items-center space-y-4 lg:w-full md:w-[25%]">
+          <h1 className="text-xl font-bold text-center text-gray-100">A Verification Link has been sent to your email</h1>
+          <div className="flex justify-center items-center space-x-3">
+            <p className="text-gray-100 semi-bold">Didnt Recieve an Email? </p>
+            <p className="text-gray-500 hover:text-gray-900">
+            </p>
+            <button className="text-orange-600 font-bold" onClick={handleResend}>Click Here To Resend Link</button>
+          </div>
+        </div>
+        )}
+        
+        
       </div>
       <Footer />
     </>

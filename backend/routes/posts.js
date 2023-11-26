@@ -112,10 +112,7 @@ router.get("/", async (req, res) => {
       title: { $regex: query.search, $options: "i" },
     };
     const posts = await Post.find(query.search ? searchFilter : null);
-    console.log(posts)
-    posts.forEach(post => {
-      console.log(post.userna);
-    });
+    // console.log(posts)
     res.status(200).json(posts);
   } catch (err) {
     console.log(err);
@@ -128,7 +125,7 @@ router.get("/user/:userId", verifyToken, async (req, res) => {
   try {
     const posts = await Post.find({ userId: req.params.userId });
     res.status(200).json(posts);
-    console.log(posts);
+    // console.log(posts);
   } catch (err) {
     res.status(500).json(err);
   }

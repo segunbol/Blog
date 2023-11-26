@@ -43,7 +43,7 @@ router.post("/register", async (req, res) => {
           token: crypto.randomBytes(32).toString("hex"),
         }).save();
 
-        const link = `http://localhost:3000/api/v1/auth/verify/${userId}/${token.token}`;
+        const link = `https://shoboloyoke.onrender.com/api/v1/auth/verify/${user.id}/${token.token}`;
         const subject = "Confirm Your Email";
         let result = username.charAt(0).toUpperCase() + username.slice(1);
         console.log(result);
@@ -116,7 +116,7 @@ router.post("/login", async (req, res) => {
           userId: user._id,
           token: crypto.randomBytes(32).toString("hex"),
         }).save();
-        const url = `http://localhost:3000/api/v1/auth/verify/${user.id}/${tokened.token}`;
+        const url = `https://shoboloyoke.onrender.com/api/v1/auth/verify/${user.id}/${token.token}`;
         const subject = "Confirm Your Email";
         await sendEmail(user.email, subject, url, user.username);
       }
@@ -126,7 +126,7 @@ router.post("/login", async (req, res) => {
           userId: user._id,
           token: crypto.randomBytes(32).toString("hex"),
         }).save();
-        const url = `http://localhost:3000/api/v1/auth/verify/${user.id}/${token.token}`;
+        const url = `https://shoboloyoke.onrender.com/api/v1/auth/verify/${user.id}/${token.token}`;
         const subject = "Confirm Your Email";
         await sendEmail(user.email, subject, url, user.username);
       }

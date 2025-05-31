@@ -71,7 +71,7 @@ const Navbar = () => {
           alt="logo"
         />
         <h1 className="text-lg md:text-xl  text-white font-extrabold ">
-          <Link to="/">Shoboloyoke</Link>
+          <Link to="/">My Oxygen</Link>
         </h1>
       </div>
       <div className=" items-center lg:flex md:hidden xs:hidden sm:hidden">

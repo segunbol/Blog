@@ -13,7 +13,6 @@ const HomePosts = ({ post }) => {
     >
       {/* left */}
       <div className="lg:w-[35%] md:h-[200px] md:w-[35%] lg:h-[200px] xs:w-[100%] xs:h-[200px] xs:px-2 flex justify-center items-center">
-        {/* {console.log(post.photo)} */}
         <img
           src={post.photo}
           alt={post.title}

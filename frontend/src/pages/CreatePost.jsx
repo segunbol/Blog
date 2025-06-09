@@ -16,7 +16,6 @@ import "../style.scss";
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  // const [value, setValue] = useState("");
   const [postImg, setPostImg] = useState(null);
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -24,8 +23,7 @@ const CreatePost = () => {
   const [cats, setCats] = useState([]);
   const navigate = useNavigate();
 
-  console.log(cats)
-
+  
   const fetchCategories = async () => {
     // setLoader(true);
     try {
@@ -48,11 +46,6 @@ const CreatePost = () => {
     fetchCategories();
   }, []);
 
-  // const deleteCategory = (i) => {
-  //   let updatedCats = [...cats];
-  //   updatedCats.splice(i);
-  //   setCats(updatedCats);
-  // };
 
   const handlePostImageUpload = (e) => {
     const file = e.target.files[0];
@@ -62,7 +55,6 @@ const CreatePost = () => {
 
   const TransformFileData = (file) => {
     const reader = new FileReader();
-    console.log(file);
     if (file) {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
@@ -73,13 +65,6 @@ const CreatePost = () => {
     }
   };
 
-  // const addCategory = () => {
-  //   let updatedCats = [...cats];
-  //   updatedCats.push(cat);
-  //   setCat("");
-  //   setCats(updatedCats);
-  // };
-  
   const handleCreate = async (e) => {
     e.preventDefault();
     const post = {
@@ -91,8 +76,6 @@ const CreatePost = () => {
       categories: cats,
       photo: postImg,
     };
-    console.log(post)
-    //post upload
     try {
       const res = await axios.post("/api/v1/posts/create", post, {
         withCredentials: true,
@@ -101,7 +84,6 @@ const CreatePost = () => {
         },
       });
       navigate("/posts/post/" + res.data._id);
-      // console.log(res.data)
     } catch (err) {
       console.log(err);
     }
@@ -126,6 +108,7 @@ const CreatePost = () => {
                   theme="snow"
                   value={desc}
                   onChange={setDesc}
+                  
                 />
               </div>
             </div>
